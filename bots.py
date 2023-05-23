@@ -37,17 +37,29 @@ class Bots ():
             print ("Error connecting to google sheets. Check .log file.")
             self.__save_error__ (err)
             quit ()
-            
-        # Filter post of the current hour
+       
+        # Filter posts
         post_filtered = []
         post_counter = 0
-        current_hour = datetime.now ().strftime ("%H")
+        now = datetime.now ()
+        current_hour = now.strftime ("%H")
+        today = now.replace (hour=0, minute=0, second=0, microsecond=0)
         for post in post_data:
+            
+            # Filter by hour
             post_hour = post["time"].split (":")[0]
-            if post_hour == current_hour:
-                post_counter += 1 
-                post["index"] = post_counter
-                post_filtered.append (post)
+            if post_hour != current_hour:
+                continue
+            
+            # Filter by date
+            post_date = datetime.strptime (post["date"], "%d/%m/%Y")
+            if post_date != today:
+                continue
+            
+            # Add index to post and save
+            post_counter += 1 
+            post["index"] = post_counter
+            post_filtered.append (post)
                 
         if post_filtered:
             print (f"Post found to upload at this hour: {len (post_filtered)}")
