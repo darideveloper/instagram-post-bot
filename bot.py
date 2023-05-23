@@ -1,12 +1,19 @@
 import os
 import json
+from time import sleep
 from scraping.web_scraping import WebScraping
 
+# Constants and enviroment variables
 CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class Bot (WebScraping):
     
-    def __init__ (self):
+    def __init__ (self, posts_data:dict):
+        """ Create bot and post image
+
+        Args:
+            posts_data (dict): data of the post to upload
+        """
         
         # Variables
         self.pages = {
@@ -20,21 +27,34 @@ class Bot (WebScraping):
             "btn_next": '._ac76 [role="button"]',
             "input_caption": '[role="textbox"]',
         }
+        self.posts_data = posts_data
         
         # Open browser and login
         super().__init__ ()
         self.__login__ ()
  
         # Post image
-        self.__post__ (r"C:\Users\daria\Downloads\imgjhashgdsa3.jpeg", "test")
+        post_image_path = os.path.join (self.posts_data["path"], self.posts_data["image"])
+        self.__post__ (post_image_path, "test")
+        
+    def __save_error__ (self, error:str):
+        """ Save errror in log file
+
+        Args:
+            error (str): error details
+        """
+        with open (os.path.join (CURRENT_FOLDER, ".log"), "w") as file:
+            file.write (str (error))         
                 
     def __login__ (self):
+        """ Load cookies to instagram to avoid login
+        """
         
         with open (os.path.join (CURRENT_FOLDER, "cookies.json")) as file:
             cookies = json.load (file)
         
         # Start browser
-        print ("login...")
+        print ("Login...")
         self.set_page (self.pages["login"])
         self.set_cookies (cookies)
             
@@ -46,7 +66,7 @@ class Bot (WebScraping):
             caption (str, optional): text of the post. Defaults to "".
         """
         
-        print (f"posting image {os.path.basename(image_path)} with caption {caption}...")
+        print (f"Posting image {os.path.basename(image_path)} with caption {caption}...")
         
         # Catch errors posting image
         try:
@@ -76,18 +96,14 @@ class Bot (WebScraping):
             # Write caption
             self.send_data (self.selectors["input_caption"], caption)
             self.click (self.selectors["btn_next"])
+            sleep (5)
             
         except Exception as err:
             
             # Save error in log fgile
-            print ("\terror posting image. check .log file.")
-            with open (os.path.join (CURRENT_FOLDER, ".log"), "w") as file:
-                file.write (str (err))       
+            print ("\tError posting image. check .log file.")
+            self.__save_error__ (err)
+             
                                          
         else:
-            print ("\tdone.")
-        
-        
-    
-if __name__ == "__main__":
-    bot = Bot ()
+            print ("\tDone.")
