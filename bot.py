@@ -1,6 +1,8 @@
 import os
 import json
 from time import sleep
+from threading import Thread
+from datetime import datetime
 from scraping.web_scraping import WebScraping
 
 # Constants and enviroment variables
@@ -34,9 +36,17 @@ class Bot (WebScraping):
         super().__init__ ()
         self.__login__ ()
  
-        # Post image
+        # Post image with threading
         post_image_path = os.path.join (self.posts_data["path"], self.posts_data["image"])
-        self.__post__ (post_image_path, "test")
+        thread_obj = Thread (
+            target=self.__post_image__, 
+            args=(
+                post_image_path, 
+                self.posts_data["caption"], 
+                self.posts_data["time"]
+                )
+            )
+        thread_obj.start ()
         
     def __save_error__ (self, error:str):
         """ Save errror in log file
@@ -59,14 +69,32 @@ class Bot (WebScraping):
         self.set_page (self.pages["login"])
         self.set_cookies (cookies)
             
-    def __post__ (self, image_path:str, caption:str=""):
+    def __post_image__ (self, image_path:str, caption:str, time:str):
         """_summary_
 
         Args:
             image_path (str): image path to post
-            caption (str, optional): text of the post. Defaults to "".
+            caption (str): text of the post. 
+            time (str): time to post in format HH:MM
         """
         
+        # Convert time string to datetime
+        post_time = datetime.strptime (time, "%H:%M")
+        now = datetime.now ()
+        post_time = post_time.replace (year=now.year, month=now.month, day=now.day, second=0, microsecond=0)
+        
+        # Skip if post time is lost
+        if now > post_time:
+            print (f"Post time {time} lost. Skipping...")
+            return
+        
+        # Wait until post time comes
+        print (f"Waiting until {self.posts_data['time']}...")
+        while now < post_time:
+            now = datetime.now ()
+            sleep (15) # wait time to check again
+        
+        # Show status
         print (f"Posting image {os.path.basename(image_path)} with caption {caption}...")
         
         # Catch errors posting image
