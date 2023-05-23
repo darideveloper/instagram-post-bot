@@ -40,16 +40,21 @@ class Bots ():
             
         # Filter post of the current hour
         post_filtered = []
+        post_counter = 0
         current_hour = datetime.now ().strftime ("%H")
         for post in post_data:
             post_hour = post["time"].split (":")[0]
             if post_hour == current_hour:
+                post_counter += 1 
+                post["index"] = post_counter
                 post_filtered.append (post)
                 
-        # Detect not post
         if post_filtered:
-            print (f"There are {len(post_filtered)} post to upload at this hour.")
+            print (f"Post found to upload at this hour: {len (post_filtered)}")
+            for post in post_filtered:
+                print (f'\t{post["index"]}. time: {post["time"]}, caption: "{post["caption"][0:15] + "..."}", image: "{post["image"]}"')
         else:            
+            # Detect not post
             print ("There are not post to upload at this hour.")
             quit ()
         

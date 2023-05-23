@@ -31,6 +31,7 @@ class Bot (WebScraping):
             "input_caption": '[role="textbox"]',
         }
         self.posts_data = posts_data
+        self.index = posts_data["index"]
         
         # Open browser and login
         super().__init__ ()
@@ -65,7 +66,7 @@ class Bot (WebScraping):
             cookies = json.load (file)
         
         # Start browser
-        print ("Login...")
+        print (f"{self.index}. Login...")
         self.set_page (self.pages["login"])
         self.set_cookies (cookies)
             
@@ -85,17 +86,17 @@ class Bot (WebScraping):
         
         # Skip if post time is lost
         if now > post_time:
-            print (f"Post time {time} lost. Skipping...")
+            print (f"{self.index}. Post time {time} lost. Skipping...")
             return
         
         # Wait until post time comes
-        print (f"Waiting until {self.posts_data['time']}...")
+        print (f"{self.index}. Waiting until {self.posts_data['time']}...")
         while now < post_time:
             now = datetime.now ()
             sleep (15) # wait time to check again
         
         # Show status
-        print (f"Posting image {os.path.basename(image_path)} with caption {caption}...")
+        print (f"{self.index}. Posting image {os.path.basename(image_path)} with caption {caption}...")
         
         # Catch errors posting image
         try:
@@ -130,9 +131,9 @@ class Bot (WebScraping):
         except Exception as err:
             
             # Save error in log fgile
-            print ("\tError posting image. check .log file.")
+            print (f"{self.index}. Error posting image. check .log file.")
             self.__save_error__ (err)
              
                                          
         else:
-            print ("\tDone.")
+            print (f"{self.index}. Done.")
