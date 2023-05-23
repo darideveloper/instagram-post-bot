@@ -18,6 +18,7 @@ class Bot (WebScraping):
         # Variables
         self.pages = {
             "login": "https://www.instagram.com/accounts/login/",
+            "home": "https://www.instagram.com/",
         }
         self.selectors = {
             "btn_create": '.xh8yej3.x1iyjqo2 div:nth-child(7) .x1n2onr6 a',
@@ -72,7 +73,7 @@ class Bot (WebScraping):
         try:
             
             # Load page
-            self.set_page (self.pages["login"])
+            self.set_page (self.pages["home"])
             
             # Open post modal
             self.click (self.selectors["btn_create"])
