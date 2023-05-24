@@ -35,7 +35,6 @@ class Bots ():
         try:
             self.google_sheets = GoogleSheets (SHEET_SHARED_LINK, os.path.join (CURRENT_FOLDER, "credentials.json"), "post")
             post_data = self.google_sheets.get_data ()
-            self.google_sheets.write_cell ("no-date", 1, 1)
         except Exception as err:
             print ("Error connecting to google sheets. Check your credentials and shared link.")
             print (f"Details: {err}")
@@ -56,6 +55,10 @@ class Bots ():
             
             # Filter by hour
             post_hour = post["time"].split (":")[0]
+            
+            if len (post_hour) == 1:
+                post_hour = "0" + post_hour
+                
             if post_hour != current_hour:
                 continue
             
