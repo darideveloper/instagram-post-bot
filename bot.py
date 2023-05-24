@@ -4,17 +4,19 @@ from time import sleep
 from threading import Thread
 from datetime import datetime
 from scraping.web_scraping import WebScraping
+from spreadsheets.google_sheets import GoogleSheets
 
 # Constants and enviroment variables
 CURRENT_FOLDER = os.path.dirname(os.path.abspath(__file__))
 
 class Bot (WebScraping):
     
-    def __init__ (self, posts_data:dict):
+    def __init__ (self, posts_data:dict, google_sheets:GoogleSheets):
         """ Create bot and post image
 
         Args:
             posts_data (dict): data of the post to upload
+            google_sheets (GoogleSheets): google sheets object to manage spreadsheet
         """
         
         # Variables
@@ -32,6 +34,8 @@ class Bot (WebScraping):
         }
         self.posts_data = posts_data
         self.index = posts_data["index"]
+        self.row = posts_data["row"]
+        self.google_sheets = google_sheets
         
         # Open browser and login
         super().__init__ ()
@@ -69,7 +73,20 @@ class Bot (WebScraping):
         print (f"{self.index}. Login...")
         self.set_page (self.pages["login"])
         self.set_cookies (cookies)
+    
+    def __update_status__ (self):
+        """ Update status of current post in google sheets 
+        """
+        
+        try:
+            self.google_sheets.write_cell ("TRUE", self.row, 6)
+        except Exception as err:
             
+            # Save error in log fgile
+            print (f"{self.index}. Error updating status in google sheet. check .log file.")
+            self.__save_error__ (err)
+            
+    
     def __post_image__ (self, image_path:str, caption:str, time:str):
         """_summary_
 
@@ -96,7 +113,7 @@ class Bot (WebScraping):
             sleep (15) # wait time to check again
         
         # Show status
-        print (f"{self.index}. Posting image {os.path.basename(image_path)} with caption {caption}...")
+        print (f'{self.index}. Posting...')
         
         # Catch errors posting image
         try:
@@ -125,7 +142,7 @@ class Bot (WebScraping):
             
             # Write caption
             self.send_data (self.selectors["input_caption"], caption)
-            self.click (self.selectors["btn_next"])
+            # self.click (self.selectors["btn_next"])
             sleep (5)
             
         except Exception as err:
@@ -137,3 +154,6 @@ class Bot (WebScraping):
                                          
         else:
             print (f"{self.index}. Done.")
+            
+            # Update ststus in google sheets
+            self.__update_status__ ()

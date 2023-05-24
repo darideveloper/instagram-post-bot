@@ -14,13 +14,15 @@ class Bots ():
     def __init__ (self):
         """ Create bots and post images
         """
+        
+        self.google_sheets = None
                 
         # Get posts to upload
         posts_data = self.__get_posts_data__ ()
 
         # Create botss
         for post_data in posts_data:
-            Bot (post_data)
+            Bot (post_data, self.google_sheets)
     
     def __get_posts_data__ (self) -> list:
         """ Get posts data from google sheets, and filter only post of the current hour
@@ -33,18 +35,24 @@ class Bots ():
         try:
             self.google_sheets = GoogleSheets (SHEET_SHARED_LINK, os.path.join (CURRENT_FOLDER, "credentials.json"), "post")
             post_data = self.google_sheets.get_data ()
+            self.google_sheets.write_cell ("no-date", 1, 1)
         except Exception as err:
-            print ("Error connecting to google sheets. Check .log file.")
-            self.__save_error__ (err)
+            print ("Error connecting to google sheets. Check your credentials and shared link.")
+            print (f"Details: {err}")
             quit ()
        
         # Filter posts
         post_filtered = []
         post_counter = 0
+        row_counter = 1
         now = datetime.now ()
         current_hour = now.strftime ("%H")
         today = now.replace (hour=0, minute=0, second=0, microsecond=0)
         for post in post_data:
+            
+            # Add sheet row to data
+            post["row"] = row_counter
+            row_counter += 1
             
             # Filter by hour
             post_hour = post["time"].split (":")[0]
