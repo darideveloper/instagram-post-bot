@@ -10,9 +10,21 @@ Project type: **client&#x27;s project**
 
 ![Logo](https://github.com/darideveloper/instagram-post-bot/blob/master/logo.png?raw=true)
 
+## Media
+
+![google sheets](https://github.com/darideveloper/instagram-post-bot/blob/master/screenshots/google-sheets.png?raw=true)
+
+![running 1](https://github.com/darideveloper/instagram-post-bot/blob/master/screenshots/running-1.png?raw=true)
+
+![running 2](https://github.com/darideveloper/instagram-post-bot/blob/master/screenshots/running-2.png?raw=true)
+
+![running 3](https://github.com/darideveloper/instagram-post-bot/blob/master/screenshots/running-3.png?raw=true)
+
 # Details
 
 This project can post images (in original sizes) on Instagram, at specific date and time, and with custom caption.
+
+Each time you run the bot, it get the post of today, at the current hour, wait the required time and post the images.
 
 # Install
 
@@ -83,6 +95,10 @@ Or run the main file:
 ```sh
 python __main__.py
 ```
+
+## Run in loop
+
+If you want to tun the bot in loop, you can use tools to run the script all days at specific time, like [Task Scheduler](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page) for windows, [Cron](https://www.google.com/search?q=linux+cronjobs&amp;oq=linux+cronjobs&amp;aqs=chrome..69i57.3719j0j1&amp;sourceid=chrome&amp;ie=UTF-8) for Linux or [Jenkins](https://www.jenkins.io/) for both systems
 
 # Roadmap
 
