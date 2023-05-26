@@ -79,7 +79,7 @@ class Bots ():
         else:            
             # Detect not post
             print ("There are not post to upload at this hour.")
-            quit ()
+            return []
         
         return post_filtered     
     
