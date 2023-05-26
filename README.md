@@ -98,7 +98,9 @@ python __main__.py
 
 ## Run in loop
 
-If you want to tun the bot in loop, you can use tools to run the script all days at specific time, like [Task Scheduler](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page) for windows, [Cron](https://www.google.com/search?q=linux+cronjobs&amp;oq=linux+cronjobs&amp;aqs=chrome..69i57.3719j0j1&amp;sourceid=chrome&amp;ie=UTF-8) for Linux or [Jenkins](https://www.jenkins.io/) for both systems
+If you want to tun the bot in loop, I suggest you to use tools to run the script all days at specific time, like [Task Scheduler](https://learn.microsoft.com/en-us/windows/win32/taskschd/task-scheduler-start-page) for windows, [Cron](https://www.google.com/search?q=linux+cronjobs&amp;oq=linux+cronjobs&amp;aqs=chrome..69i57.3719j0j1&amp;sourceid=chrome&amp;ie=UTF-8) for Linux or [Jenkins](https://www.jenkins.io/) for both systems
+
+In other hand, you can do it too with the file **run_loop.py**, who run the main script each hour (NOTE: if any errors happends, like internet issues, the bot will stop working until you restart it)
 
 # Roadmap
 
@@ -110,4 +112,3 @@ If you want to tun the bot in loop, you can use tools to run the script all days
 * [x] Filter today posts
 * [x] Update google sheet after post
 * [x] Run with main file
-
