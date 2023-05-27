@@ -123,26 +123,31 @@ class Bot (WebScraping):
             
             # Open post modal
             self.click (self.selectors["btn_create"])
+            sleep (2)
             self.refresh_selenium ()
             
             # Upload image
             self.send_data (self.selectors["input_image"], image_path)
+            sleep (2)
             self.refresh_selenium ()
             
             # Set size
             self.click (self.selectors["btn_show_size"])
+            sleep (2)
             self.refresh_selenium ()
             self.click (self.selectors["btn_original_size"])
             self.click (self.selectors["btn_next"])
+            sleep (2)
             self.refresh_selenium ()
             
             # Skip fiters
             self.click (self.selectors["btn_next"])
+            sleep (2)
             self.refresh_selenium ()
             
             # Write caption
             self.send_data (self.selectors["input_caption"], caption)
-            # self.click (self.selectors["btn_next"])
+            self.click (self.selectors["btn_next"])
             sleep (5)
             
         except Exception as err:
