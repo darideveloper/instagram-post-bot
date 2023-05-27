@@ -14,4 +14,3 @@ while True:
     # Sleep until the next hour
     print (f"Waiting {minutes_left} minutes, to the next run...\n")
     sleep (minutes_left * 60)
-    

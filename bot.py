@@ -79,7 +79,7 @@ class Bot (WebScraping):
         """
         
         try:
-            self.google_sheets.write_cell ("TRUE", self.row, 6)
+            self.google_sheets.write_cell ("TRUE", self.row + 1, 6)
         except Exception as err:
             
             # Save error in log fgile
@@ -110,7 +110,7 @@ class Bot (WebScraping):
         print (f"{self.index}. Waiting until {self.posts_data['time']}...")
         while now < post_time:
             now = datetime.now ()
-            sleep (15) # wait time to check again
+            sleep (5) # wait time to check again
         
         # Show status
         print (f'{self.index}. Posting...')
