@@ -31,6 +31,11 @@ class Bots ():
             list: post data to upload
         """
         
+        # Show system data
+        print (f'System date: {datetime.now ().strftime ("%d/%m/%Y")}')
+        print (f'System time: {datetime.now ().strftime ("%H:%M:%S")}')
+        print () 
+        
         # Connect to google sheets
         try:
             self.google_sheets = GoogleSheets (SHEET_SHARED_LINK, os.path.join (CURRENT_FOLDER, "credentials.json"), "post")
@@ -39,49 +44,59 @@ class Bots ():
             print ("Error connecting to google sheets. Check your credentials and shared link.")
             print (f"Details: {err}")
             quit ()
-       
-        # Filter posts
-        post_filtered = []
-        post_counter = 0
-        row_counter = 1
-        now = datetime.now ()
-        current_hour = now.strftime ("%H")
-        today = now.replace (hour=0, minute=0, second=0, microsecond=0)
+            
+        print (f"Total post found in sheet: {len (post_data)}")
+        
+        # Add row to each post
+        row_counter = 0
         for post in post_data:
-            
-            # Add sheet row to data
-            post["row"] = row_counter
             row_counter += 1
-            
-            # Filter by hour
+            post["row"] = row_counter
+       
+        # Filter posts by date
+        posts_today = []
+        for post in post_data:
+            post_date = datetime.strptime (post["date"], "%d/%m/%Y").date ()
+            today = datetime.now ().date ()
+            if post_date == today:
+                posts_today.append (post)
+                
+        print (f"Total post found for today today: {len (posts_today)}")
+        
+        # Filter posts by hour
+        posts_hour = []
+        for post in posts_today:
             post_hour = post["time"].split (":")[0]
+            current_hour = datetime.now ().strftime ("%H")
+            if post_hour == current_hour:
+                posts_hour.append (post)
+        
+        print (f"Total post found for this hour: {len (posts_hour)}")
+        print ()
+        
+        # Add index to each post
+        index_counter = 0
+        for post in posts_hour:
+            index_counter += 1
+            post["index"] = index_counter
+        
+        if posts_hour:
             
-            if len (post_hour) == 1:
-                post_hour = "0" + post_hour
-                
-            if post_hour != current_hour:
-                continue
+            print ("Post to upload:")
             
-            # Filter by date
-            post_date = datetime.strptime (post["date"], "%d/%m/%Y")
-            if post_date != today:
-                continue
-            
-            # Add index to post and save
-            post_counter += 1 
-            post["index"] = post_counter
-            post_filtered.append (post)
-                
-        if post_filtered:
-            print (f"Post found to upload at this hour: {len (post_filtered)}")
-            for post in post_filtered:
-                print (f'\t{post["index"]}. time: {post["time"]}, caption: "{post["caption"][0:15] + "..."}", image: "{post["image"]}"')
+            # Show posts data
+            for post in posts_hour:
+                index = post["index"]
+                time = post["time"]
+                caption = post["caption"].replace('\n', ' ')[0:15]
+                image = post["image"]
+                print (f'\t{index}. {time} - {caption} - {image}')
+            return posts_hour     
         else:            
             # Detect not post
             print ("There are not post to upload at this hour.")
             return []
         
-        return post_filtered     
     
 if __name__ == "__main__":
     Bots ()
