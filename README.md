@@ -1,5 +1,5 @@
-<div><a href='https://github.com/github.com/darideveloper/blob/master/LICENSE' target='_blank'>
-            <img src='https://img.shields.io/github/license/github.com/darideveloper.svg?style=for-the-badge' alt='MIT License' height='30px'/>
+<div><a href='https://github.com/darideveloper/instagram-post-bot/blob/master/LICENSE' target='_blank'>
+            <img src='https://img.shields.io/github/license/darideveloper/instagram-post-bot.svg?style=for-the-badge' alt='MIT License' height='30px'/>
         </a><a href='https://www.linkedin.com/in/francisco-dari-hernandez-6456b6181/' target='_blank'>
                 <img src='https://img.shields.io/static/v1?style=for-the-badge&message=LinkedIn&color=0A66C2&logo=LinkedIn&logoColor=FFFFFF&label=' alt='Linkedin' height='30px'/>
             </a><a href='https://t.me/darideveloper' target='_blank'>
@@ -18,16 +18,13 @@
 
 Bot for post on Instagram with data from Google Sheets
 
-Start date: **2023-05-19**
-
-Last update: **2023-05-23**
-
-Project type: **client's project**
+Project type: **client**
 
 </div><br><details>
             <summary>Table of Contents</summary>
             <ol>
 <li><a href='#buildwith'>Build With</a></li>
+<li><a href='#relatedprojects'>Related Projects</a></li>
 <li><a href='#media'>Media</a></li>
 <li><a href='#details'>Details</a></li>
 <li><a href='#install'>Install</a></li>
@@ -39,6 +36,10 @@ Project type: **client's project**
 # Build with
 
 <div align='center'><a href='https://www.python.org/' target='_blank'> <img src='https://cdn.svgporn.com/logos/python.svg' alt='Python' title='Python' height='50px'/> </a><a href='https://www.selenium.dev/' target='_blank'> <img src='https://cdn.svgporn.com/logos/selenium.svg' alt='Selenium' title='Selenium' height='50px'/> </a><a href='https://sheets.google.com/' target='_blank'> <img src='https://www.gstatic.com/images/branding/product/1x/sheets_2020q4_48dp.png' alt='Google Sheets' title='Google Sheets' height='50px'/> </a></div>
+
+# Related projects
+
+<div align='center'><a href='https://github.com/darideveloper/instagram-followers-message-bot' target='_blank'> <img src='https://github.com/darideveloper/instagram-followers-message-bot/blob/master/logo.png?raw=true' alt='Instagram Followers Message Bot' title='Instagram Followers Message Bot' height='50px'/> </a></div>
 
 # Media
 
@@ -142,5 +143,4 @@ In other hand, you can do it too with the file **run_loop.py**, who run the main
 * [x] Filter today posts
 * [x] Update google sheet after post
 * [x] Run with main file
-
 
